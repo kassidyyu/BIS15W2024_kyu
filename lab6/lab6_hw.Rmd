@@ -147,12 +147,14 @@ superhero_powers %>%
 ## Your Favorite
 14. Pick your favorite superhero and let's see their powers!  
 ```{r}
-filter(superhero_powers, hero_names == "Yoda")
+superhero_powers %>%
+  filter(hero_names == "Groot") %>%
+  select_if(. == "Groot" | . == TRUE)
 ```
 
 15. Can you find your hero in the superhero_info data? Show their info!  
 ```{r}
-filter(superhero_info, name == "Yoda")
+filter(superhero_info, name == "Groot")
 ```
 
 ## Push your final code to GitHub!

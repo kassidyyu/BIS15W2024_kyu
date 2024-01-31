@@ -672,34 +672,32 @@ superhero_powers %>%
 14. Pick your favorite superhero and let's see their powers!  
 
 ```r
-filter(superhero_powers, hero_names == "Yoda")
+superhero_powers %>%
+  filter(hero_names == "Groot") %>%
+  select_if(. == "Groot" | . == TRUE)
 ```
 
 ```
-## # A tibble: 1 × 168
-##   hero_names agility accelerated_healing lantern_power_ring
-##   <chr>      <lgl>   <lgl>               <lgl>             
-## 1 Yoda       TRUE    FALSE               FALSE             
-## # ℹ 164 more variables: dimensional_awareness <lgl>, cold_resistance <lgl>,
-## #   durability <lgl>, stealth <lgl>, energy_absorption <lgl>, flight <lgl>,
-## #   danger_sense <lgl>, underwater_breathing <lgl>, marksmanship <lgl>,
-## #   weapons_master <lgl>, power_augmentation <lgl>, animal_attributes <lgl>,
-## #   longevity <lgl>, intelligence <lgl>, super_strength <lgl>,
-## #   cryokinesis <lgl>, telepathy <lgl>, energy_armor <lgl>,
-## #   energy_blasts <lgl>, duplication <lgl>, size_changing <lgl>, …
+## # A tibble: 1 × 14
+##   hero_names durability longevity intelligence super_strength duplication
+##   <chr>      <lgl>      <lgl>     <lgl>        <lgl>          <lgl>      
+## 1 Groot      TRUE       TRUE      TRUE         TRUE           TRUE       
+## # ℹ 8 more variables: size_changing <lgl>, stamina <lgl>,
+## #   invulnerability <lgl>, fire_resistance <lgl>, regeneration <lgl>,
+## #   plant_control <lgl>, matter_absorption <lgl>, resurrection <lgl>
 ```
 
 15. Can you find your hero in the superhero_info data? Show their info!  
 
 ```r
-filter(superhero_info, name == "Yoda")
+filter(superhero_info, name == "Groot")
 ```
 
 ```
 ## # A tibble: 1 × 11
 ##   name  gender eye_color race   hair_color height publisher skin_color alignment
 ##   <chr> <chr>  <chr>     <chr>  <chr>       <dbl> <chr>     <chr>      <chr>    
-## 1 Yoda  Male   brown     Yoda'… White          66 George L… green      good     
+## 1 Groot Male   yellow    Flora… <NA>          701 Marvel C… <NA>       good     
 ## # ℹ 2 more variables: weight <dbl>, height_weight_ratio <dbl>
 ```
 
