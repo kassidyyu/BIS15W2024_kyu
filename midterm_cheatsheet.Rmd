@@ -1,0 +1,170 @@
+---
+title: "miderm_cheatsheet"
+output: 
+  html_document: 
+    keep_md: true
+date: "2024-02-05"
+---
+
+# Cheat Sheet Labs 1-7
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Always start with these
+
+```{r message=FALSE, warning=FALSE}
+library("tidyverse")
+library("janitor")
+library("skimr")
+```
+
+## Basic operators
+
+`!` for not\
+==, !=, \<=, \>= similar to Python\
+
+## Lab 2
+
+### Data Types
+
+numeric, integer, character or string, logical, complex\
+`is()` checks whether some variable is of the specified data type and returns a logical value.\
+`as()` can store a variable as the specified data type\
+
+#### Creating a vector
+
+```{r}
+my_vector <- c(1, 3, 5, 7, NA)
+anyNA(my_vector)
+mean(my_vector, na.rm=T) # to remove
+```
+
+### Vectors and Data Matrices
+
+Vectors can be indexed similar to Python BUT index starts with `1`\
+Data matrices can be created using `matrix()` command by combining vectors.\
+`nrow` gives number of rows, `byrow` tells whether to sort by row.\
+`[,2]` selects all rows, second column.\
+Adding up values: `colSums`, `rowSums`\
+`rbind()` adds a row to a data matrix
+
+## Lab 3
+
+### Data Frames
+
+Data frames work similar to matrices. `data.frame()` turns an object into a data frame.\
+
+#### Finding info on data frames
+
+`names()` gives column names\
+`dim()` for dimentions `row column`, or `nrow()` and `ncol()` separately.\
+`str()` gives structure breakdown, observations of variables.\
+`glimpse()` and `summary()` also help summarize the data frame.\
+To access a specific column, use `$`: `frame_name$col_name`\
+`head()` prints the first few rows, `tail()` prints the last few.\
+
+##### Writing CSV files
+
+`write.csv(data_frame_name, "csv_filename.csv", row.names=F)`
+
+#### Importing Data
+
+`getwd()` to get working directory. Check the working directory when trying to access files.
+
+`read_csv` to read files. Add folder name, e.g. "data" plus `/` to direct\
+
+##### Some important functions
+
+`table()` is useful for a limited number of categorical observations.\
+`filter()` pulls observations. Specify the data frame, then the requirement(s)\
+
+## Lab 4
+
+### The `select()` function
+
+The first argument is the data frame of interest, then the next are specifications.\
+Select a range using `start_col:end_col`.\
+The - operator removes variables.\
+Options to select columns based on a specific criteria include: 1. ends_with() = Select columns that end with a character string 2. contains() = Select columns that contain a character string 3. matches() = Select columns that match a regular expression 4. one_of() = Select columns names that are from a group of names Can also use `is.datatype` in select. `!` for not.\
+
+### Other functions
+
+`tolower` lowercase column names `clean_names` sets variables to be all lowercase, only letters and underscores.
+
+### The `filter()` function
+
+Extracts observations following a specified rule.\
+Can use `%in%`for multiple values within the same variable\
+e.g. filter(frame, variable %in% c(value1, value2))\
+`between` for a range.\
+`near(column, number, tol = tolerance)`\
+
+## Lab 5
+
+### More on the `filter()` function
+
+Rules: + `filter(condition1, condition2)` both conditions met - default , means &.\
++ `filter(condition1, !condition2)`condition one is true but condition 2 is not.\
++ `filter(condition1 | condition2)` condition 1 or condition 2.\
++ filter(xor(condition1, condition2) only one of the conditions is met, and not when both conditions are met.\
+
+### Pipes `%>%`
+
+Combines functions efficiently, organize code into blocks. Use `%>%` after each line except the last.\
+`arrange()` sorts the data; use `arrange(desc())`for highest to lowest.\
+
+## Lab 6
+
+### New columns through `mutate()`
+
+Creates a new column from existing columns, mutates the data frame in place.\
+Format: `mutate(new_col_name = existing_col/2)` to get a column of half values.\
+`across()` can specify individual columns mutate(across(c("order", "family"), tolower)) puts observations in lowercase.\
+
+### Using `ifelse`
+
+Format: ifelse(condition == desired, if_yes_value, else_value).\
+
+### `tabyl` in Janitor
+
+takes argument specifying data frame, then specific variable of interest.\
+
+### More functions
+
+`select_if()`; `select_if(all)` will select columns where all values are TRUE, `min()`, `max()`.\
+`count()` for a count, will show up as column `n`.\
+
+## Lab 7
+
+### Learning how to use `summarize()`
+
+`skim()` is another summarizing function.\
+`hist()` can be used to check the output.\
+
+```{r}
+#know how to do this!
+#highlight, command, return = see part of interest
+msleep %>% 
+  summarize(n_genera = n_distinct(genus),
+            n_vore = n_distinct(vore))
+```
+
+`group_by` to organize, group by specified category.\
+`n()` counts the number of observations.\
+`count()` combines `group_by()` and `n()`. It can be used across variables\
+`summarize()` is a cleaner way to present data.\
+`n_distinct()` cleanly presents the number of distinct observations.\
+
+#### Extra tricks
+
+`across()` with summarize
+
+```{r}
+# good to know but will not 'make or break' midterm!
+#100% summarize & group_by on midterm!!!!
+penguins %>%
+  group_by(sex) %>% 
+  summarize(across(contains("mm"), mean, na.rm=T))
+```
