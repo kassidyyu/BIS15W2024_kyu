@@ -2,10 +2,11 @@
 title: "Midterm Review and `across()` "
 date: "`r Sys.Date()`"
 output:
-  html_document:
+  html_document: 
     theme: spacelab
     toc: yes
     toc_float: yes
+    keep_md: yes
   pdf_document:
     toc: yes
 ---
@@ -31,6 +32,7 @@ We rushed through the second part of lab 7 last week, so let's do a quick review
 
 ```{r}
 ?penguins
+names(penguins)
 ```
 
 Recall that group_by() and summarize() work great together. Let's say we were interested in how body mass varied by island. It is reasonable to assume that the islands are different, so maybe the penguins are as well.
@@ -42,8 +44,8 @@ penguins %>%
 
 What if we are interested in the number of observations (penguins) by species and island?
 ```{r}
-penguins %>% 
-  group_by(island, species) %>% 
+penguins %>% # can save this as its own object for plotting later
+  group_by(island, species) %>% # island and then species, can switch
   summarize(n_penguins=n(), .groups = 'keep')
 ```
 
@@ -62,18 +64,29 @@ penguins %>%
 ## Practice
 1. Produce a summary of the mean for bill_length_mm, bill_depth_mm, flipper_length_mm, and body_mass_g within Adelie penguins only. Be sure to provide the number of samples.
 ```{r}
-
+penguins %>%
+  filter(species == "Adelie") %>%
+  summarize(mean_bill_length = mean(bill_length_mm, na.rm=T),
+            mean_bill_depth = mean(bill_depth_mm, na.rm=T),
+            mean_flipper_length = mean(flipper_length_mm, na.rm=T),
+            mean_body_mass = mean(body_mass_g, na.rm=T),
+            n = n())
+# this is very long and prone to mistakes
 ```
 
 2. How does the mean of `bill_length_mm` compare between penguin species?
 ```{r}
-
+penguins %>%
+  group_by(species) %>%
+  summarize(mean_bill_legnth = mean(bill_length_mm, na.rm=T))
 ```
 
 
 3. For some penguins, their sex is listed as NA. Where do these penguins occur?
 ```{r}
-
+penguins %>%
+  filter(is.na(sex)) %>%
+  select(island, species, sex)
 ```
 
 ## `across()`
@@ -116,7 +129,7 @@ Operators can also work, here I am summarizing `n_distinct()` across all variabl
 ```{r}
 penguins %>%
   summarize(across(!c(species, island, sex, year), 
-                   mean, na.rm=T))
+                   mean, na.rm=T)) # more efficient ways to do the other things we know how to do
 ```
 
 All variables that include "bill"...all of the other dplyr operators also work.
@@ -132,7 +145,10 @@ names(penguins)
 ## Practice
 1. Produce separate summaries of the mean and standard deviation for bill_length_mm, bill_depth_mm, and flipper_length_mm for each penguin species. Be sure to provide the number of samples.  
 ```{r}
-
+penguins %>%
+  group_by(species) %>%
+  summarize(across(c(contains("mm"), body_mass_g), mean, na.rm=T),
+            n_samples=n())
 ```
 
 ## That's it! Let's take a break and then move on to part 2! 
