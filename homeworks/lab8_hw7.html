@@ -11,7 +11,7 @@
 
 <meta name="author" content="Kassidy Yu" />
 
-<meta name="date" content="2024-02-12" />
+<meta name="date" content="2024-02-13" />
 
 <title>Homework 7</title>
 
@@ -376,7 +376,7 @@ display: none;
 
 <h1 class="title toc-ignore">Homework 7</h1>
 <h4 class="author">Kassidy Yu</h4>
-<h4 class="date">2024-02-12</h4>
+<h4 class="date">2024-02-13</h4>
 
 </div>
 
@@ -557,37 +557,39 @@ make sense? Are NA’s represented by values?</strong></p>
 NA’s appear as “NA”.</strong></p>
 <pre class="r"><code>#amniota %&gt;%
 #  replace_with_na(replace = list(contains() = -999))</code></pre>
+<pre class="r"><code>#amniota %&gt;%
+#  replace_with_na(replace = list(subspecies = -999,
+#                                 female_maturity_d = -999,
+#                                 litter_or_clutch_size_n = -999,
+#                                 litters_or_clutches_per_y = -999,
+#                                 adult_body_mass_g = -999,
+#                                 maximum_longevity_y = -999,
+#                                 gestation_d = -999,
+#                                 weaning_d = -999,
+#                                 birth_or_hatching_weight_g = -999,
+#                                 weaning_weight_g = -999,
+#                                 egg_mass_g = -999,
+#                                 incubation_d = -999,
+#                                 fledging_age_d = -999,
+#                                 longevity_y = -999,
+#                                 male_maturity_d = -999,
+#                                 inter_litter_or_interbirth_interval_y = -999,
+#                                 female_body_mass_g = -999,
+#                                 male_body_mass_g = -999,
+#                                 no_sex_body_mass_g = -999,
+#                                 egg_width_mm = -999,
+#                                 egg_length_mm = -999,
+#                                 fledging_mass_g = -999,
+#                                 adult_svl_cm = -999,
+#                                 male_svl_cm = -999,
+#                                 female_svl_cm = -999,
+#                                 birth_or_hatching_svl_cm = -999,
+#                                 female_svl_at_maturity_cm = -999,
+#                                 female_body_mass_at_maturity_g = -999,
+#                                 no_sex_svl_cm = -999,
+#                                 no_sex_maturity_d = -999))</code></pre>
 <pre class="r"><code>amniota %&gt;%
-  replace_with_na(replace = list(subspecies = -999,
-                                 female_maturity_d = -999,
-                                 litter_or_clutch_size_n = -999,
-                                 litters_or_clutches_per_y = -999,
-                                 adult_body_mass_g = -999,
-                                 maximum_longevity_y = -999,
-                                 gestation_d = -999,
-                                 weaning_d = -999,
-                                 birth_or_hatching_weight_g = -999,
-                                 weaning_weight_g = -999,
-                                 egg_mass_g = -999,
-                                 incubation_d = -999,
-                                 fledging_age_d = -999,
-                                 longevity_y = -999,
-                                 male_maturity_d = -999,
-                                 inter_litter_or_interbirth_interval_y = -999,
-                                 female_body_mass_g = -999,
-                                 male_body_mass_g = -999,
-                                 no_sex_body_mass_g = -999,
-                                 egg_width_mm = -999,
-                                 egg_length_mm = -999,
-                                 fledging_mass_g = -999,
-                                 adult_svl_cm = -999,
-                                 male_svl_cm = -999,
-                                 female_svl_cm = -999,
-                                 birth_or_hatching_svl_cm = -999,
-                                 female_svl_at_maturity_cm = -999,
-                                 female_body_mass_at_maturity_g = -999,
-                                 no_sex_svl_cm = -999,
-                                 no_sex_maturity_d = -999))</code></pre>
+  replace_with_na_all(condition = ~.x == -999)</code></pre>
 <pre><code>## # A tibble: 21,322 × 36
 ##    class order     family genus species subspecies common_name female_maturity_d
 ##    &lt;chr&gt; &lt;chr&gt;     &lt;chr&gt;  &lt;chr&gt; &lt;chr&gt;        &lt;dbl&gt; &lt;chr&gt;                   &lt;dbl&gt;

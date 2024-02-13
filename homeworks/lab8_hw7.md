@@ -1,7 +1,7 @@
 ---
 title: "Homework 7"
 author: "Kassidy Yu"
-date: "2024-02-12"
+date: "2024-02-13"
 output:
   html_document: 
     theme: spacelab
@@ -223,37 +223,42 @@ miss_var_summary(amphibio)
 
 
 ```r
+#amniota %>%
+#  replace_with_na(replace = list(subspecies = -999,
+#                                 female_maturity_d = -999,
+#                                 litter_or_clutch_size_n = -999,
+#                                 litters_or_clutches_per_y = -999,
+#                                 adult_body_mass_g = -999,
+#                                 maximum_longevity_y = -999,
+#                                 gestation_d = -999,
+#                                 weaning_d = -999,
+#                                 birth_or_hatching_weight_g = -999,
+#                                 weaning_weight_g = -999,
+#                                 egg_mass_g = -999,
+#                                 incubation_d = -999,
+#                                 fledging_age_d = -999,
+#                                 longevity_y = -999,
+#                                 male_maturity_d = -999,
+#                                 inter_litter_or_interbirth_interval_y = -999,
+#                                 female_body_mass_g = -999,
+#                                 male_body_mass_g = -999,
+#                                 no_sex_body_mass_g = -999,
+#                                 egg_width_mm = -999,
+#                                 egg_length_mm = -999,
+#                                 fledging_mass_g = -999,
+#                                 adult_svl_cm = -999,
+#                                 male_svl_cm = -999,
+#                                 female_svl_cm = -999,
+#                                 birth_or_hatching_svl_cm = -999,
+#                                 female_svl_at_maturity_cm = -999,
+#                                 female_body_mass_at_maturity_g = -999,
+#                                 no_sex_svl_cm = -999,
+#                                 no_sex_maturity_d = -999))
+```
+
+```r
 amniota %>%
-  replace_with_na(replace = list(subspecies = -999,
-                                 female_maturity_d = -999,
-                                 litter_or_clutch_size_n = -999,
-                                 litters_or_clutches_per_y = -999,
-                                 adult_body_mass_g = -999,
-                                 maximum_longevity_y = -999,
-                                 gestation_d = -999,
-                                 weaning_d = -999,
-                                 birth_or_hatching_weight_g = -999,
-                                 weaning_weight_g = -999,
-                                 egg_mass_g = -999,
-                                 incubation_d = -999,
-                                 fledging_age_d = -999,
-                                 longevity_y = -999,
-                                 male_maturity_d = -999,
-                                 inter_litter_or_interbirth_interval_y = -999,
-                                 female_body_mass_g = -999,
-                                 male_body_mass_g = -999,
-                                 no_sex_body_mass_g = -999,
-                                 egg_width_mm = -999,
-                                 egg_length_mm = -999,
-                                 fledging_mass_g = -999,
-                                 adult_svl_cm = -999,
-                                 male_svl_cm = -999,
-                                 female_svl_cm = -999,
-                                 birth_or_hatching_svl_cm = -999,
-                                 female_svl_at_maturity_cm = -999,
-                                 female_body_mass_at_maturity_g = -999,
-                                 no_sex_svl_cm = -999,
-                                 no_sex_maturity_d = -999))
+  replace_with_na_all(condition = ~.x == -999)
 ```
 
 ```
