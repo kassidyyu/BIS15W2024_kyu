@@ -13,7 +13,7 @@
 
 <meta name="date" content="2024-02-20" />
 
-<title>Lab 3 Homework</title>
+<title>Lab 7 Homework</title>
 
 <script>// Pandoc 2.9 adds attributes on both header and div. We remove the former (to
 // be compatible with the behavior of Pandoc < 2.8).
@@ -374,7 +374,7 @@ display: none;
 
 
 
-<h1 class="title toc-ignore">Lab 3 Homework</h1>
+<h1 class="title toc-ignore">Lab 7 Homework</h1>
 <h4 class="author">Kassidy Yu</h4>
 <h4 class="date">2024-02-20</h4>
 
@@ -392,267 +392,270 @@ header above.</p>
 <p>Make sure to use the formatting conventions of RMarkdown to make your
 report neat and clean!</p>
 </div>
-<div id="load-the-tidyverse" class="section level2">
-<h2>Load the tidyverse</h2>
-<pre class="r"><code>library(tidyverse)</code></pre>
-<div id="mammals-sleep" class="section level3">
-<h3>Mammals Sleep</h3>
+<div id="load-the-libraries" class="section level2">
+<h2>Load the libraries</h2>
+<pre class="r"><code>library(tidyverse)
+library(janitor)
+library(skimr)</code></pre>
+<p>For this assignment we are going to work with a large data set from
+the <a href="http://www.fao.org/about/en/">United Nations Food and
+Agriculture Organization</a> on world fisheries. These data are pretty
+wild, so we need to do some cleaning. First, load the data.</p>
+<p>Load the data <code>FAO_1950to2012_111914.csv</code> as a new object
+titled <code>fisheries</code>.</p>
+<pre class="r"><code>fisheries &lt;- readr::read_csv(file = &quot;data/FAO_1950to2012_111914.csv&quot;)</code></pre>
+<pre><code>## Rows: 17692 Columns: 71
+## ── Column specification ────────────────────────────────────────────────────────
+## Delimiter: &quot;,&quot;
+## chr (69): Country, Common name, ISSCAAP taxonomic group, ASFIS species#, ASF...
+## dbl  (2): ISSCAAP group#, FAO major fishing area
+## 
+## ℹ Use `spec()` to retrieve the full column specification for this data.
+## ℹ Specify the column types or set `show_col_types = FALSE` to quiet this message.</code></pre>
 <ol style="list-style-type: decimal">
-<li>For this assignment, we are going to use built-in data on mammal
-sleep patterns. From which publication are these data taken from? Since
-the data are built-in you can use the help function in R. The name of
-the data is <code>msleep</code>.<br />
+<li>Do an exploratory analysis of the data (your choice). What are the
+names of the variables, what are the dimensions, are there any NA’s,
+what are the classes of the variables?<br />
 </li>
 </ol>
-<pre class="r"><code>msleep &lt;- msleep</code></pre>
+<pre class="r"><code>glimpse(fisheries)</code></pre>
+<pre><code>## Rows: 17,692
+## Columns: 71
+## $ Country                   &lt;chr&gt; &quot;Albania&quot;, &quot;Albania&quot;, &quot;Albania&quot;, &quot;Albania&quot;, …
+## $ `Common name`             &lt;chr&gt; &quot;Angelsharks, sand devils nei&quot;, &quot;Atlantic bo…
+## $ `ISSCAAP group#`          &lt;dbl&gt; 38, 36, 37, 45, 32, 37, 33, 45, 38, 57, 33, …
+## $ `ISSCAAP taxonomic group` &lt;chr&gt; &quot;Sharks, rays, chimaeras&quot;, &quot;Tunas, bonitos, …
+## $ `ASFIS species#`          &lt;chr&gt; &quot;10903XXXXX&quot;, &quot;1750100101&quot;, &quot;17710001XX&quot;, &quot;2…
+## $ `ASFIS species name`      &lt;chr&gt; &quot;Squatinidae&quot;, &quot;Sarda sarda&quot;, &quot;Sphyraena spp…
+## $ `FAO major fishing area`  &lt;dbl&gt; 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, 37, …
+## $ Measure                   &lt;chr&gt; &quot;Quantity (tonnes)&quot;, &quot;Quantity (tonnes)&quot;, &quot;Q…
+## $ `1950`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1951`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1952`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1953`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1954`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1955`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1956`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1957`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1958`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1959`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1960`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1961`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1962`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1963`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1964`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1965`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1966`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1967`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1968`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1969`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1970`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1971`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1972`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1973`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1974`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1975`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1976`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1977`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1978`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1979`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1980`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1981`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1982`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, NA, …
+## $ `1983`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;559&quot;, NA, NA, NA, N…
+## $ `1984`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;392&quot;, NA, NA, NA, N…
+## $ `1985`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;406&quot;, NA, NA, NA, N…
+## $ `1986`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;499&quot;, NA, NA, NA, N…
+## $ `1987`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;564&quot;, NA, NA, NA, N…
+## $ `1988`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;724&quot;, NA, NA, NA, N…
+## $ `1989`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;583&quot;, NA, NA, NA, N…
+## $ `1990`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;754&quot;, NA, NA, NA, N…
+## $ `1991`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;283&quot;, NA, NA, NA, N…
+## $ `1992`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;196&quot;, NA, NA, NA, N…
+## $ `1993`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;150 F&quot;, NA, NA, NA,…
+## $ `1994`                    &lt;chr&gt; NA, NA, NA, NA, NA, NA, &quot;100 F&quot;, NA, NA, NA,…
+## $ `1995`                    &lt;chr&gt; &quot;0 0&quot;, &quot;1&quot;, NA, &quot;0 0&quot;, &quot;0 0&quot;, NA, &quot;52&quot;, &quot;30&quot;…
+## $ `1996`                    &lt;chr&gt; &quot;53&quot;, &quot;2&quot;, NA, &quot;3&quot;, &quot;2&quot;, NA, &quot;104&quot;, &quot;8&quot;, NA,…
+## $ `1997`                    &lt;chr&gt; &quot;20&quot;, &quot;0 0&quot;, NA, &quot;0 0&quot;, &quot;0 0&quot;, NA, &quot;65&quot;, &quot;4&quot;…
+## $ `1998`                    &lt;chr&gt; &quot;31&quot;, &quot;12&quot;, NA, NA, NA, NA, &quot;220&quot;, &quot;18&quot;, NA,…
+## $ `1999`                    &lt;chr&gt; &quot;30&quot;, &quot;30&quot;, NA, NA, NA, NA, &quot;220&quot;, &quot;18&quot;, NA,…
+## $ `2000`                    &lt;chr&gt; &quot;30&quot;, &quot;25&quot;, &quot;2&quot;, NA, NA, NA, &quot;220&quot;, &quot;20&quot;, NA…
+## $ `2001`                    &lt;chr&gt; &quot;16&quot;, &quot;30&quot;, NA, NA, NA, NA, &quot;120&quot;, &quot;23&quot;, NA,…
+## $ `2002`                    &lt;chr&gt; &quot;79&quot;, &quot;24&quot;, NA, &quot;34&quot;, &quot;6&quot;, NA, &quot;150&quot;, &quot;84&quot;, …
+## $ `2003`                    &lt;chr&gt; &quot;1&quot;, &quot;4&quot;, NA, &quot;22&quot;, NA, NA, &quot;84&quot;, &quot;178&quot;, NA,…
+## $ `2004`                    &lt;chr&gt; &quot;4&quot;, &quot;2&quot;, &quot;2&quot;, &quot;15&quot;, &quot;1&quot;, &quot;2&quot;, &quot;76&quot;, &quot;285&quot;, …
+## $ `2005`                    &lt;chr&gt; &quot;68&quot;, &quot;23&quot;, &quot;4&quot;, &quot;12&quot;, &quot;5&quot;, &quot;6&quot;, &quot;68&quot;, &quot;150&quot;…
+## $ `2006`                    &lt;chr&gt; &quot;55&quot;, &quot;30&quot;, &quot;7&quot;, &quot;18&quot;, &quot;8&quot;, &quot;9&quot;, &quot;86&quot;, &quot;102&quot;…
+## $ `2007`                    &lt;chr&gt; &quot;12&quot;, &quot;19&quot;, NA, NA, NA, NA, &quot;132&quot;, &quot;18&quot;, NA,…
+## $ `2008`                    &lt;chr&gt; &quot;23&quot;, &quot;27&quot;, NA, NA, NA, NA, &quot;132&quot;, &quot;23&quot;, NA,…
+## $ `2009`                    &lt;chr&gt; &quot;14&quot;, &quot;21&quot;, NA, NA, NA, NA, &quot;154&quot;, &quot;20&quot;, NA,…
+## $ `2010`                    &lt;chr&gt; &quot;78&quot;, &quot;23&quot;, &quot;7&quot;, NA, NA, NA, &quot;80&quot;, &quot;228&quot;, NA…
+## $ `2011`                    &lt;chr&gt; &quot;12&quot;, &quot;12&quot;, NA, NA, NA, NA, &quot;88&quot;, &quot;9&quot;, NA, &quot;…
+## $ `2012`                    &lt;chr&gt; &quot;5&quot;, &quot;5&quot;, NA, NA, NA, NA, &quot;129&quot;, &quot;290&quot;, NA, …</code></pre>
 <ol start="2" style="list-style-type: decimal">
-<li>Store these data into a new data frame <code>sleep</code>.<br />
-</li>
+<li>Use <code>janitor</code> to rename the columns and make them easier
+to use. As part of this cleaning step, change <code>country</code>,
+<code>isscaap_group_number</code>, <code>asfis_species_number</code>,
+and <code>fao_major_fishing_area</code> to data class factor.</li>
 </ol>
-<pre class="r"><code>sleep &lt;- msleep</code></pre>
+<pre class="r"><code>fisheries &lt;- clean_names(fisheries)</code></pre>
+<pre class="r"><code>fisheries$country &lt;- as.factor(fisheries$country)
+fisheries$isscaap_group_number &lt;- as.factor(fisheries$isscaap_group_number) 
+fisheries$asfis_species_number &lt;- as.factor(fisheries$asfis_species_number) 
+fisheries$fao_major_fishing_area &lt;- as.factor(fisheries$fao_major_fishing_area)</code></pre>
+<p>We need to deal with the years because they are being treated as
+characters and start with an X. We also have the problem that the column
+names that are years actually represent data. We haven’t discussed tidy
+data yet, so here is some help. You should run this ugly chunk to
+transform the data for the rest of the homework. It will only work if
+you have used janitor to rename the variables in question 2!</p>
+<pre class="r"><code>fisheries_tidy &lt;- fisheries %&gt;% 
+  pivot_longer(-c(country,common_name,isscaap_group_number,isscaap_taxonomic_group,asfis_species_number,asfis_species_name,fao_major_fishing_area,measure),
+               names_to = &quot;year&quot;,
+               values_to = &quot;catch&quot;,
+               values_drop_na = TRUE) %&gt;% 
+  mutate(year= as.numeric(str_replace(year, &#39;x&#39;, &#39;&#39;))) %&gt;% 
+  mutate(catch= str_replace(catch, c(&#39; F&#39;), replacement = &#39;&#39;)) %&gt;% 
+  mutate(catch= str_replace(catch, c(&#39;...&#39;), replacement = &#39;&#39;)) %&gt;% 
+  mutate(catch= str_replace(catch, c(&#39;-&#39;), replacement = &#39;&#39;)) %&gt;% 
+  mutate(catch= str_replace(catch, c(&#39;0 0&#39;), replacement = &#39;&#39;))
+
+fisheries_tidy$catch &lt;- as.numeric(fisheries_tidy$catch)
+
+#Ledford added for us to clean the data! just run and be happy we don&#39;t need to write</code></pre>
 <ol start="3" style="list-style-type: decimal">
-<li>What are the dimensions of this data frame (variables and
-observations)? How do you know? Please show the <em>code</em> that you
-used to determine this below.<br />
-83 x 11</li>
+<li>How many countries are represented in the data? Provide a count and
+list their names.</li>
 </ol>
-<pre class="r"><code>dim(sleep)</code></pre>
-<pre><code>## [1] 83 11</code></pre>
+<pre class="r"><code>fisheries_tidy %&gt;%
+  distinct(country)</code></pre>
+<pre><code>## # A tibble: 203 × 1
+##    country            
+##    &lt;fct&gt;              
+##  1 Albania            
+##  2 Algeria            
+##  3 American Samoa     
+##  4 Angola             
+##  5 Anguilla           
+##  6 Antigua and Barbuda
+##  7 Argentina          
+##  8 Aruba              
+##  9 Australia          
+## 10 Bahamas            
+## # ℹ 193 more rows</code></pre>
+<pre class="r"><code>n_distinct(fisheries_tidy$country)</code></pre>
+<pre><code>## [1] 203</code></pre>
 <ol start="4" style="list-style-type: decimal">
-<li>Are there any NAs in the data? How did you determine this? Please
-show your code.<br />
-</li>
+<li>Refocus the data only to include country, isscaap_taxonomic_group,
+asfis_species_name, asfis_species_number, year, catch.</li>
 </ol>
-<p>Yes</p>
-<pre class="r"><code>is.na(sleep)</code></pre>
-<pre><code>##        name genus  vore order conservation sleep_total sleep_rem sleep_cycle
-##  [1,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-##  [2,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-##  [3,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-##  [4,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-##  [5,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-##  [6,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-##  [7,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-##  [8,] FALSE FALSE  TRUE FALSE         TRUE       FALSE      TRUE        TRUE
-##  [9,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [10,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [11,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [12,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [13,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [14,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [15,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [16,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-## [17,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [18,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [19,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [20,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [21,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [22,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [23,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [24,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [25,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [26,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [27,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [28,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [29,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [30,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [31,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [32,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [33,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [34,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [35,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [36,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [37,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [38,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [39,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [40,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [41,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [42,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [43,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [44,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [45,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [46,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [47,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [48,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [49,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [50,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [51,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [52,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [53,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [54,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [55,] FALSE FALSE  TRUE FALSE        FALSE       FALSE     FALSE        TRUE
-## [56,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [57,] FALSE FALSE  TRUE FALSE         TRUE       FALSE      TRUE        TRUE
-## [58,] FALSE FALSE  TRUE FALSE         TRUE       FALSE     FALSE        TRUE
-## [59,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [60,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [61,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-## [62,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [63,] FALSE FALSE  TRUE FALSE        FALSE       FALSE     FALSE        TRUE
-## [64,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [65,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [66,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-## [67,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [68,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [69,] FALSE FALSE  TRUE FALSE         TRUE       FALSE     FALSE        TRUE
-## [70,] FALSE FALSE FALSE FALSE        FALSE       FALSE      TRUE        TRUE
-## [71,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [72,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE        TRUE
-## [73,] FALSE FALSE  TRUE FALSE         TRUE       FALSE     FALSE       FALSE
-## [74,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [75,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [76,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [77,] FALSE FALSE FALSE FALSE        FALSE       FALSE     FALSE       FALSE
-## [78,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-## [79,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-## [80,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [81,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE        TRUE
-## [82,] FALSE FALSE FALSE FALSE         TRUE       FALSE      TRUE        TRUE
-## [83,] FALSE FALSE FALSE FALSE         TRUE       FALSE     FALSE       FALSE
-##       awake brainwt bodywt
-##  [1,] FALSE    TRUE  FALSE
-##  [2,] FALSE   FALSE  FALSE
-##  [3,] FALSE    TRUE  FALSE
-##  [4,] FALSE   FALSE  FALSE
-##  [5,] FALSE   FALSE  FALSE
-##  [6,] FALSE    TRUE  FALSE
-##  [7,] FALSE    TRUE  FALSE
-##  [8,] FALSE    TRUE  FALSE
-##  [9,] FALSE   FALSE  FALSE
-## [10,] FALSE   FALSE  FALSE
-## [11,] FALSE   FALSE  FALSE
-## [12,] FALSE   FALSE  FALSE
-## [13,] FALSE    TRUE  FALSE
-## [14,] FALSE   FALSE  FALSE
-## [15,] FALSE   FALSE  FALSE
-## [16,] FALSE   FALSE  FALSE
-## [17,] FALSE   FALSE  FALSE
-## [18,] FALSE   FALSE  FALSE
-## [19,] FALSE   FALSE  FALSE
-## [20,] FALSE   FALSE  FALSE
-## [21,] FALSE   FALSE  FALSE
-## [22,] FALSE   FALSE  FALSE
-## [23,] FALSE   FALSE  FALSE
-## [24,] FALSE   FALSE  FALSE
-## [25,] FALSE   FALSE  FALSE
-## [26,] FALSE   FALSE  FALSE
-## [27,] FALSE    TRUE  FALSE
-## [28,] FALSE   FALSE  FALSE
-## [29,] FALSE   FALSE  FALSE
-## [30,] FALSE    TRUE  FALSE
-## [31,] FALSE    TRUE  FALSE
-## [32,] FALSE   FALSE  FALSE
-## [33,] FALSE   FALSE  FALSE
-## [34,] FALSE   FALSE  FALSE
-## [35,] FALSE    TRUE  FALSE
-## [36,] FALSE   FALSE  FALSE
-## [37,] FALSE    TRUE  FALSE
-## [38,] FALSE   FALSE  FALSE
-## [39,] FALSE    TRUE  FALSE
-## [40,] FALSE   FALSE  FALSE
-## [41,] FALSE    TRUE  FALSE
-## [42,] FALSE   FALSE  FALSE
-## [43,] FALSE   FALSE  FALSE
-## [44,] FALSE    TRUE  FALSE
-## [45,] FALSE   FALSE  FALSE
-## [46,] FALSE    TRUE  FALSE
-## [47,] FALSE    TRUE  FALSE
-## [48,] FALSE   FALSE  FALSE
-## [49,] FALSE   FALSE  FALSE
-## [50,] FALSE   FALSE  FALSE
-## [51,] FALSE    TRUE  FALSE
-## [52,] FALSE   FALSE  FALSE
-## [53,] FALSE    TRUE  FALSE
-## [54,] FALSE   FALSE  FALSE
-## [55,] FALSE   FALSE  FALSE
-## [56,] FALSE    TRUE  FALSE
-## [57,] FALSE    TRUE  FALSE
-## [58,] FALSE   FALSE  FALSE
-## [59,] FALSE    TRUE  FALSE
-## [60,] FALSE    TRUE  FALSE
-## [61,] FALSE    TRUE  FALSE
-## [62,] FALSE   FALSE  FALSE
-## [63,] FALSE   FALSE  FALSE
-## [64,] FALSE   FALSE  FALSE
-## [65,] FALSE    TRUE  FALSE
-## [66,] FALSE   FALSE  FALSE
-## [67,] FALSE   FALSE  FALSE
-## [68,] FALSE   FALSE  FALSE
-## [69,] FALSE   FALSE  FALSE
-## [70,] FALSE   FALSE  FALSE
-## [71,] FALSE   FALSE  FALSE
-## [72,] FALSE    TRUE  FALSE
-## [73,] FALSE   FALSE  FALSE
-## [74,] FALSE   FALSE  FALSE
-## [75,] FALSE   FALSE  FALSE
-## [76,] FALSE    TRUE  FALSE
-## [77,] FALSE   FALSE  FALSE
-## [78,] FALSE   FALSE  FALSE
-## [79,] FALSE   FALSE  FALSE
-## [80,] FALSE    TRUE  FALSE
-## [81,] FALSE   FALSE  FALSE
-## [82,] FALSE   FALSE  FALSE
-## [83,] FALSE   FALSE  FALSE</code></pre>
+<pre class="r"><code>fisheries_focus &lt;- fisheries_tidy %&gt;%
+  select(country, isscaap_taxonomic_group, asfis_species_name, asfis_species_number, year, catch)</code></pre>
 <ol start="5" style="list-style-type: decimal">
-<li>Show a list of the column names is this data frame.</li>
+<li>Based on the asfis_species_number, how many distinct fish species
+were caught as part of these data?</li>
 </ol>
-<pre class="r"><code>colnames(sleep)</code></pre>
-<pre><code>##  [1] &quot;name&quot;         &quot;genus&quot;        &quot;vore&quot;         &quot;order&quot;        &quot;conservation&quot;
-##  [6] &quot;sleep_total&quot;  &quot;sleep_rem&quot;    &quot;sleep_cycle&quot;  &quot;awake&quot;        &quot;brainwt&quot;     
-## [11] &quot;bodywt&quot;</code></pre>
+<pre class="r"><code>n_distinct(fisheries_focus$asfis_species_number)</code></pre>
+<pre><code>## [1] 1551</code></pre>
 <ol start="6" style="list-style-type: decimal">
-<li>How many herbivores are represented in the data?<br />
-</li>
+<li>Which country had the largest overall catch in the year 2000?</li>
 </ol>
-<p>There are 32 herbivores represented.</p>
-<pre class="r"><code>table(sleep$vore)</code></pre>
-<pre><code>## 
-##   carni   herbi insecti    omni 
-##      19      32       5      20</code></pre>
+<pre class="r"><code>fisheries_focus %&gt;%
+  filter(catch == max(catch, na.rm=T))</code></pre>
+<pre><code>## # A tibble: 1 × 6
+##   country isscaap_taxonomic_group  asfis_species_name asfis_species_number  year
+##   &lt;fct&gt;   &lt;chr&gt;                    &lt;chr&gt;              &lt;fct&gt;                &lt;dbl&gt;
+## 1 Peru    Herrings, sardines, anc… Engraulis ringens  1210600208            1970
+## # ℹ 1 more variable: catch &lt;dbl&gt;</code></pre>
 <ol start="7" style="list-style-type: decimal">
-<li>We are interested in two groups; small and large mammals. Let’s
-define small as less than or equal to 19kg body weight and large as
-greater than or equal to 200kg body weight. Make two new dataframes
-(large and small) based on these parameters.</li>
+<li>Which country caught the most sardines (<em>Sardina pilchardus</em>)
+between the years 1990-2000?</li>
 </ol>
-<pre class="r"><code>small &lt;- filter(sleep, bodywt&lt;=19)
-large &lt;- filter(sleep, bodywt&gt;=200)</code></pre>
+<pre class="r"><code>fisheries_focus %&gt;%
+  filter(asfis_species_name == &quot;Sardina pilchardus&quot;, between(year, 1990, 2000)) %&gt;%
+  count(country) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre><code>## # A tibble: 37 × 2
+##    country            n
+##    &lt;fct&gt;          &lt;int&gt;
+##  1 Spain             33
+##  2 France            25
+##  3 Morocco           22
+##  4 Portugal          22
+##  5 Netherlands       15
+##  6 Germany           14
+##  7 United Kingdom    12
+##  8 Albania           11
+##  9 Algeria           11
+## 10 Denmark           11
+## # ℹ 27 more rows</code></pre>
 <ol start="8" style="list-style-type: decimal">
-<li>What is the mean weight for both the small and large mammals?<br />
-The mean body weight for small mammals is 1.797847kg and the mean body
-weight for large mammals is 1747.071kg.</li>
+<li>Which five countries caught the most cephalopods between
+2008-2012?</li>
 </ol>
-<pre class="r"><code>small_weights &lt;- small$bodywt
-mean(small_weights)</code></pre>
-<pre><code>## [1] 1.797847</code></pre>
-<pre class="r"><code>large_weights &lt;- large$bodywt
-mean(large_weights)</code></pre>
-<pre><code>## [1] 1747.071</code></pre>
+<pre class="r"><code>fisheries_focus %&gt;%
+  filter(isscaap_taxonomic_group == &quot;Squids, cuttlefishes, octopuses&quot;, between(year, 2008, 2012)) %&gt;%
+  count(country) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre><code>## # A tibble: 122 × 2
+##    country                      n
+##    &lt;fct&gt;                    &lt;int&gt;
+##  1 Spain                      116
+##  2 Korea, Republic of          85
+##  3 Portugal                    64
+##  4 France                      59
+##  5 United States of America    56
+##  6 Australia                   51
+##  7 Italy                       41
+##  8 Greece                      40
+##  9 Thailand                    40
+## 10 China                       38
+## # ℹ 112 more rows</code></pre>
 <ol start="9" style="list-style-type: decimal">
-<li>Using a similar approach as above, do large or small animals sleep
-longer on average?<br />
-</li>
+<li>Which species had the highest catch total between 2008-2012? (hint:
+Osteichthyes is not a species)</li>
 </ol>
-<p>Small animals sleep longer on average.</p>
-<pre class="r"><code>small_sleep &lt;- small$sleep_total
-mean(small_sleep)</code></pre>
-<pre><code>## [1] 11.78644</code></pre>
-<pre class="r"><code>large_sleep &lt;- large$sleep_total
-mean(large_sleep)</code></pre>
-<pre><code>## [1] 3.3</code></pre>
+<pre class="r"><code>fisheries_focus %&gt;%
+  filter(asfis_species_name != &quot;Osteichthyes&quot;, between(year, 2008, 2012)) %&gt;%
+  count(asfis_species_name) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre><code>## # A tibble: 1,471 × 2
+##    asfis_species_name     n
+##    &lt;chr&gt;              &lt;int&gt;
+##  1 Thunnus albacares   1006
+##  2 Thunnus obesus       923
+##  3 Xiphias gladius      837
+##  4 Elasmobranchii       761
+##  5 Katsuwonus pelamis   761
+##  6 Thunnus alalunga     755
+##  7 Makaira nigricans    584
+##  8 Mugilidae            482
+##  9 Rajiformes           427
+## 10 Scombroidei          417
+## # ℹ 1,461 more rows</code></pre>
 <ol start="10" style="list-style-type: decimal">
-<li>Which animal is the sleepiest among the entire dataframe?<br />
-The Little brown bat is the sleepiest.</li>
+<li>Use the data to do at least one analysis of your choice.</li>
 </ol>
-<pre class="r"><code>max(sleep$sleep_total)</code></pre>
-<pre><code>## [1] 19.9</code></pre>
-<pre class="r"><code>filter(sleep, sleep_total == 19.9)</code></pre>
-<pre><code>## # A tibble: 1 × 11
-##   name    genus vore  order conservation sleep_total sleep_rem sleep_cycle awake
-##   &lt;chr&gt;   &lt;chr&gt; &lt;chr&gt; &lt;chr&gt; &lt;chr&gt;              &lt;dbl&gt;     &lt;dbl&gt;       &lt;dbl&gt; &lt;dbl&gt;
-## 1 Little… Myot… inse… Chir… &lt;NA&gt;                19.9         2         0.2   4.1
-## # ℹ 2 more variables: brainwt &lt;dbl&gt;, bodywt &lt;dbl&gt;</code></pre>
-</div>
+<pre class="r"><code>fisheries_focus %&gt;%
+  group_by(country) %&gt;%
+  filter(asfis_species_name == &quot;Osteichthyes&quot;) %&gt;%
+  count(year) %&gt;%
+  arrange(desc(n))</code></pre>
+<pre><code>## # A tibble: 10,908 × 3
+## # Groups:   country [201]
+##    country  year     n
+##    &lt;fct&gt;   &lt;dbl&gt; &lt;int&gt;
+##  1 Japan    1974    17
+##  2 Japan    1976    17
+##  3 Japan    1989    17
+##  4 Japan    1971    16
+##  5 Japan    1972    16
+##  6 Japan    1973    16
+##  7 Japan    1977    16
+##  8 Japan    1978    16
+##  9 Japan    1980    16
+## 10 Japan    1981    16
+## # ℹ 10,898 more rows</code></pre>
 </div>
 <div id="push-your-final-code-to-github" class="section level2">
 <h2>Push your final code to GitHub!</h2>
