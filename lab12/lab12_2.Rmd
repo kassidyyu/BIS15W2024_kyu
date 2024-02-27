@@ -228,12 +228,20 @@ homerange %>%
 ## Practice
 1. Use facet_wrap to compare the distribution of `log10.mass` by `thermoregulation`.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x = taxon, y = log10.mass))+
+  geom_boxplot()+
+  facet_wrap(~thermoregulation)+
+  theme(axis.text.x = element_text(angle = 60, hjust=1))
 ```
 
 2. Use facet_grid to compare the distribution of `log10.mass` by `locomotion`.
 ```{r}
-
+homerange %>%
+  ggplot(aes(x = taxon, y = log10.mass))+
+  geom_boxplot()+
+  facet_grid(.~locomotion)+
+  theme(axis.text.x = element_text(angle = 60, hjust=1))
 ```
 
 ## Wrap-up  
