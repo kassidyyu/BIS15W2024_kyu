@@ -1,0 +1,189 @@
+---
+title: "midterm2_cheatsheet"
+author: "Kassidy Yu"
+date: "2024-02-27"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+### Loading the libraries
+
+```{r message=FALSE, warning=FALSE}
+library(tidyverse)
+library(janitor)
+library(here)
+library(naniar)
+library(skimr)
+```
+
+## Lab 8
+
+### Using `across()`
+
+```{r}
+library(palmerpenguins)
+```
+
+```{r}
+penguins %>% 
+  group_by(species) %>% 
+  summarize(across(c(contains("mm"), body_mass_g), mean, na.rm=T ),
+            n_samples=n())
+```
+
+### Dealing with NAs
+
+`naniar` replace function
+
+***replace_with_na(replace = list(colname = "NA Representation"))***
+
+Evaluate NAs with `miss_var_summary()`to get number & pct missing
+
+## Lab 9 (Tidyr)
+
+Tidy data follows three conventions:\
+(1) each variable has its own column\
+(2) each observation has its own row\
+(3) each value has its own cell
+
+### `separate()`
+
+Separate into columns dataframe %\>% separate(colname, into = c("new1", "new2"), sep = "\_")
+
+### `pivotlonger()`
+
+Rules:\
++ `pivot_longer(cols, names_to, values_to)`\
++ cols - Columns to pivot to longer format; can give range\
++ names_to - Name of the new column; it will contain the column names of gathered columns as values\
++ names_sep - separates column with multiple variables\
++ values_to - Name of the new column; it will contain the data stored in the values of gathered columns\
++ values_drop_na = T - drops the NAs\
++ names_prefix
+
+### `pivotwider()`
+
+The opposite of pivot_longer(). You use pivot_wider() when you have an observation scattered across multiple rows.
+
+Rules:\
++ pivot_wider(names_from, values_from)\
++ names_from - Values in the names_from column will become new column names\
++ values_from - Cell values will be taken from the values_from column\
+
+Typically more readable formatting, but not necessarily as tidy.
+
+##ggplot!
+
+Remember that plots are built in layers: **plot= data + geom\_ + aesthetics**
+
+-   `top_n()` - pass n = number (+ for highest, - for lowest), x = variable\
+-   x = `reorder(xval, yval)` - sorts x-axis by yval\
+-   `scale_y_log10()` - more readable sometimes\
+-   `options(scipen=999)` - cancel scientific notation
+
+### Lab 10
+
+```{r}
+ggplot(data=iris, #specify data name - unneeded when piped from data frame 
+       mapping=aes(x=Sepal.Width, y=Sepal.Length))+
+  geom_point()
+```
+
+#### Plot Types
+
+`geom_point()` scatterplot\
+`geom_jitter()` same, helps with overplotting\
+`geom_smooth(method=lm, se=T)` add a linear regression line with standard error\
+`geom_bar()` only need to specify x-value, takes counts\
+`geom_col()` specify x and y - usually more clear than geom_bar\
+`geom_boxplot()`\
+`geom_line()` lines, can pair with point\
+
+### Lab 11
+
+#### Aesthetics
+
+`labs()`\
+title = "Insert Title",\
+x = "x-axis Label",\
+y = "y-axis Label"\
+
+`theme()`\
+`hjust()` - 0 = left, 0.5 = centered, 1 = right\
+theme(plot.title=element_text(size=rel(1.5), hjust=.5)) - basic, nice text fix\
+`legend.position` - left, right, bottom, top\
+axis.text.x = element_text(angle = 60, hjust=1) - basic fix of cluttered x names\
+
+`fill`\
+colors in by specified categorical variable, gives key\
+**note: `fill` for bar graphs, etc., `color` for scatterplots**
+
+`size`\
+can scale points to have size correspond to continuous variable\
+
+`shape`\
+under aes(), can use alongside color, puts triangles, square, etc. on points to differentiate\
+can also do `shape = #` for line plots
+
+**side-by-side barplots** use `position = "dodge"` within geom_bar or geom_col\
+
+`group`\
+similar to fill but doesn't add color\
+
+### Lab 12
+
+#### Complex Plots & Aesthetics
+
+`shape = 2` for triangles, test other #s for different shapes\
+`geom_histogram()`\
+- `bins = 20` can change the number of bins/bin width\
+- `color = "black"` outlines bars\
+- `fill = "lavenderblush"` fills in bars\
+
+`geom_density()` - similar to histograms but uses smoothing function\
+- can add on top of histogram\
+
+#### `case_when()`
+
+Use within mutate to allow specifications on multiple variables, can create categories\
+ex: mutate(case_when(numericvariable \< 1 \~ "small", ...))
+
+#### Fun Colors
+
+`alpha = #` transparency
+
+```{r}
+library(RColorBrewer)
+library(paletteer)
+```
+
+```{r}
+ls("package:ggthemes")[grepl("theme_", ls("package:ggthemes"))]
+# lists themes
+```
+
+The (R Color Brewer)[<https://colorbrewer2.org/#type=sequential&scheme=BuGn&n=3>] website is very helpful for getting an idea of the color palettes. To make things easy, use these two guidelines:
+
+\+`scale_colour_brewer()` is for points\
++`scale_fill_brewer()` is for fills\
+
+Save palette
+
+```{r}
+colors <- paletteer::palettes_d_names
+
+my_palette <- paletteer_d("ggsci::nrc_npg")
+
+```
+
+`scale_fill_manual(values = my_palette)`
+
+#### Faceting
+
+`facet_wrap(~var)` makes a ribbon of panels by a specified categorical variable and allows you to control how you want them arranged.\
+
+`facet_grid()` allows control over the faceted variable; it can be arranged in rows or columns. rows\~columns.\
+- use `.~col` or `row~.` to not specify one or other\
